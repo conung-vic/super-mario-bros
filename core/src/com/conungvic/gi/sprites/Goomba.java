@@ -41,6 +41,7 @@ public class Goomba extends Enemy {
         setBounds(getX(), getY(), 16 / PPM, 16 / PPM);
     }
 
+    @Override
     public void update(float dt) {
         stateTime += dt;
         if (setToDestroy && !destroyed) {

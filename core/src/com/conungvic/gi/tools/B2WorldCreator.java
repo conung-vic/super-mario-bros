@@ -8,15 +8,19 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.conungvic.gi.screens.PlayScreen;
 import com.conungvic.gi.sprites.Brick;
 import com.conungvic.gi.sprites.Coin;
+import com.conungvic.gi.sprites.Goomba;
 
 import static com.conungvic.gi.MarioBros.GROUND_BIT;
 import static com.conungvic.gi.MarioBros.OBJECT_BIT;
 import static com.conungvic.gi.MarioBros.PPM;
 
 public class B2WorldCreator {
+
+    public static Array<Goomba> goombas = new Array<>();
 
     public static void createBodiesForMap(PlayScreen screen) {
         World world = screen.getWorld();
@@ -40,6 +44,15 @@ public class B2WorldCreator {
         ) {
             Rectangle rect = mo.getRectangle();
             new Brick(screen, rect);
+        }
+
+        for (RectangleMapObject mo: map.getLayers()
+                .get("Goombas")
+                .getObjects()
+                .getByType(RectangleMapObject.class)
+        ) {
+            Rectangle rect = mo.getRectangle();
+            goombas.add(new Goomba(screen, rect.x / PPM, rect.y / PPM));
         }
     }
 

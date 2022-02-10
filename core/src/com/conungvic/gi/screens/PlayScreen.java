@@ -43,7 +43,6 @@ public class PlayScreen implements Screen {
     private final Box2DDebugRenderer b2dr;
 
     private final Mario player;
-    private final Goomba goomba;
 
     private Music music;
 
@@ -66,6 +65,7 @@ public class PlayScreen implements Screen {
 
         B2WorldCreator.createBodiesForMap(this);
 
+
         this.player = new Mario(this);
 
         this.world.setContactListener(new WorldContactListener());
@@ -74,7 +74,6 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        goomba = new Goomba(this, 5.64f, .32f);
     }
 
     public TiledMap getMap() {
@@ -95,8 +94,11 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(dt);
-        goomba.update(dt);
         hud.update(dt);
+
+        for (Goomba goomba: B2WorldCreator.goombas) {
+            goomba.update(dt);
+        }
         gamecam.position.x = player.b2body.getPosition().x;
 
         gamecam.update();
@@ -138,7 +140,9 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        goomba.draw(game.batch);
+        for (Goomba goomba: B2WorldCreator.goombas) {
+            goomba.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

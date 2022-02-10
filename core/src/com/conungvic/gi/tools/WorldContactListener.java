@@ -49,6 +49,11 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             }
+            case ENEMY_BIT: {
+                ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+                ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                break;
+            }
             case MARIO_BIT | ENEMY_BIT: {
 
             }
