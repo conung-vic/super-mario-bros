@@ -3,6 +3,7 @@ package com.conungvic.gi.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -48,6 +49,8 @@ public class PlayScreen implements Screen {
 
     private final Mario player;
 
+    private Music music;
+
     public PlayScreen(MarioBros game) {
         this.atlas = new TextureAtlas("Mario_and_enemies.atlas");
         this.game = game;
@@ -70,6 +73,12 @@ public class PlayScreen implements Screen {
         this.player = new Mario(this);
 
         this.world.setContactListener(new WorldContactListener());
+
+        this.music = MarioBros.assetManager.get("audio/music/mario_music.ogg", Music.class);
+        music.setLooping(true);
+        music.play();
+
+
     }
 
     public TextureAtlas getAtlas() {

@@ -2,6 +2,9 @@ package com.conungvic.gi;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Logger;
 import com.conungvic.gi.screens.PlayScreen;
@@ -21,6 +24,8 @@ public class MarioBros extends Game {
 
 	public SpriteBatch batch;
 
+	public static AssetManager assetManager = new AssetManager();
+
 
 	@Override
 	public void create() {
@@ -28,12 +33,20 @@ public class MarioBros extends Game {
 		Gdx.app.debug("azaza", "asdasdasd");
 		batch = new SpriteBatch();
 
+		assetManager.load("audio/music/mario_music.ogg", Music.class);
+		assetManager.load("audio/sounds/coin.wav", Sound.class);
+		assetManager.load("audio/sounds/bump.wav", Sound.class);
+		assetManager.load("audio/sounds/breakblock.wav", Sound.class);
+
+		assetManager.finishLoading();
+
 		this.setScreen(new PlayScreen(this));
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
+		assetManager.dispose();
 		super.dispose();
 	}
 
