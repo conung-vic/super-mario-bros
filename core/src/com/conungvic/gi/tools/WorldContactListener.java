@@ -8,8 +8,10 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.conungvic.gi.sprites.Enemy;
 import com.conungvic.gi.sprites.InteractiveTileObject;
 
+import static com.conungvic.gi.MarioBros.ENEMY_BIT;
 import static com.conungvic.gi.MarioBros.ENEMY_HEAD_BIT;
 import static com.conungvic.gi.MarioBros.MARIO_BIT;
+import static com.conungvic.gi.MarioBros.OBJECT_BIT;
 
 public class WorldContactListener implements ContactListener {
     @Override
@@ -34,11 +36,21 @@ public class WorldContactListener implements ContactListener {
             case ENEMY_HEAD_BIT | MARIO_BIT: {
                 if (fixA.getFilterData().categoryBits == ENEMY_HEAD_BIT) {
                     ((Enemy)fixA.getUserData()).hitOnHead();
-                }
-                if (fixB.getFilterData().categoryBits == ENEMY_HEAD_BIT) {
+                } else {
                     ((Enemy)fixB.getUserData()).hitOnHead();
                 }
                 break;
+            }
+            case ENEMY_BIT | OBJECT_BIT: {
+                if (fixA.getFilterData().categoryBits == ENEMY_BIT) {
+                    ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
+                } else {
+                    ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                }
+                break;
+            }
+            case MARIO_BIT | ENEMY_BIT: {
+
             }
             default: {}
         }

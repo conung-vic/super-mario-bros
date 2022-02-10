@@ -1,6 +1,7 @@
 package com.conungvic.gi.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
+import com.conungvic.gi.scenes.Hud;
 import com.conungvic.gi.screens.PlayScreen;
 
 import static com.conungvic.gi.MarioBros.BRICK_BIT;
@@ -47,7 +49,9 @@ public class Goomba extends Enemy {
             setToDestroy = false;
 
             setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
+            stateTime = 0;
         } else if (!destroyed) {
+            b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
         }
@@ -69,7 +73,7 @@ public class Goomba extends Enemy {
         shape.setRadius(6 / PPM);
 
         fDef.shape = shape;
-        b2body.createFixture(fDef);
+        b2body.createFixture(fDef).setUserData(this);
 
         // create the head
         PolygonShape head = new PolygonShape();
@@ -89,5 +93,13 @@ public class Goomba extends Enemy {
     @Override
     public void hitOnHead() {
         setToDestroy = true;
+        Hud.addScore(50);
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        if (!destroyed || stateTime < 1) {
+            super.draw(batch);
+        }
     }
 }
