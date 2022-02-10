@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import sun.awt.image.OffScreenImageSource;
+import com.conungvic.gi.screens.PlayScreen;
 
 import static com.conungvic.gi.MarioBros.PPM;
 
@@ -23,9 +23,9 @@ public abstract class InteractiveTileObject {
     protected Body body;
     protected Fixture fixture;
 
-    public InteractiveTileObject(World world, TiledMap map, Rectangle bounds) {
-        this.world = world;
-        this.map = map;
+    public InteractiveTileObject(PlayScreen screen, Rectangle bounds) {
+        this.world = screen.getWorld();
+        this.map = screen.getMap();
         this.bounds = bounds;
 
         BodyDef bodyDef = new BodyDef();

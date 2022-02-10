@@ -15,8 +15,10 @@ import com.conungvic.gi.screens.PlayScreen;
 
 import static com.conungvic.gi.MarioBros.BRICK_BIT;
 import static com.conungvic.gi.MarioBros.COIN_BIT;
-import static com.conungvic.gi.MarioBros.DEFAULT_BIT;
+import static com.conungvic.gi.MarioBros.ENEMY_BIT;
+import static com.conungvic.gi.MarioBros.GROUND_BIT;
 import static com.conungvic.gi.MarioBros.MARIO_BIT;
+import static com.conungvic.gi.MarioBros.OBJECT_BIT;
 import static com.conungvic.gi.MarioBros.PPM;
 
 public class Mario extends Sprite {
@@ -121,7 +123,7 @@ public class Mario extends Sprite {
 
         FixtureDef fDef = new FixtureDef();
         fDef.filter.categoryBits = MARIO_BIT;
-        fDef.filter.maskBits = DEFAULT_BIT | COIN_BIT | BRICK_BIT;
+        fDef.filter.maskBits = GROUND_BIT | COIN_BIT | BRICK_BIT | ENEMY_BIT | OBJECT_BIT;
 
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / PPM);
