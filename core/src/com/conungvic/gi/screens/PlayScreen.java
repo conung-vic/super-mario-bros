@@ -191,6 +191,12 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        if (gameOver()) {
+            dispose();
+            Gdx.app.log("PlayScreen", "Mario died, show gameover screen");
+            game.setScreen(new GameOverScreen(game));
+        }
     }
 
     @Override
@@ -224,5 +230,13 @@ public class PlayScreen implements Screen {
 
     public Music getMusic() {
         return music;
+    }
+
+    public boolean gameOver() {
+        if (player.currentState == Mario.State.DEAD && player.getStateTimer() > 3) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

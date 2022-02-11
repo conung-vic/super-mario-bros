@@ -306,7 +306,18 @@ public class Mario extends Sprite {
             for (Fixture fixture: b2body.getFixtureList()) {
                 fixture.setFilterData(filter);
             }
+            b2body.setLinearVelocity(new Vector2(0, 0));
             b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
         }
     }
+
+    public boolean isDead() {
+        return marioIsDead;
+    }
+
+    public float getStateTimer() {
+        return stateTimer;
+    }
+
+
 }
