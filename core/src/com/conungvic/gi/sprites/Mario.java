@@ -1,5 +1,6 @@
 package com.conungvic.gi.sprites;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.conungvic.gi.MarioBros;
 import com.conungvic.gi.screens.PlayScreen;
 
 import static com.conungvic.gi.MarioBros.BRICK_BIT;
@@ -24,7 +26,7 @@ import static com.conungvic.gi.MarioBros.OBJECT_BIT;
 import static com.conungvic.gi.MarioBros.PPM;
 
 public class Mario extends Sprite {
-    public enum State {FALLING, JUMPING, STANDING, RUNNING}
+    public enum State {FALLING, JUMPING, STANDING, RUNNING, GROWING}
 
     public State currentState;
     public State prevState;
@@ -33,14 +35,21 @@ public class Mario extends Sprite {
     public Body b2body;
 
     private TextureRegion marioStand;
+    private TextureRegion marioJump;
     private Animation<TextureRegion> marioRun;
-    private Animation<TextureRegion> marioJump;
+
+    private TextureRegion bigMarioStand;
+    private TextureRegion bigMarioJump;
+    private Animation<TextureRegion> bigMarioRun;
+    private Animation<TextureRegion> growMario;
 
     private boolean runningRight;
     private float stateTimer;
 
+    private boolean marioIsBig;
+    private boolean runGrowAniimation;
+
     public Mario(PlayScreen screen) {
-        super(screen.getAtlas().findRegion("little_mario"));
         this.world = screen.getWorld();
 
         this.currentState = State.STANDING;
@@ -50,22 +59,32 @@ public class Mario extends Sprite {
 
         Array<TextureRegion> frames = new Array<>();
         for (int i = 1; i < 4; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 16));
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"), i * 16, 0, 16, 16));
         }
         this.marioRun = new Animation<>(0.1f, frames);
         frames.clear();
 
-        for (int i = 4; i < 6; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 16));
-        }
-        this.marioJump = new Animation<>(0.1f, frames);
-
-
+        this.marioJump = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 80, 0, 16, 16);
+        frames.clear();
         defineMario();
 
-        marioStand = new TextureRegion(getTexture(), 0, 0, 16, 16);
+        marioStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 0, 0, 16, 16);
         setBounds(0, 0, 16 / PPM, 16 / PPM);
         setRegion(marioStand);
+
+        bigMarioStand = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32);
+        bigMarioJump = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 80, 0, 16, 32);
+        for (int i = 1; i < 4; i++) {
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), i * 16, 0, 16, 32));
+        }
+        this.bigMarioRun = new Animation<>(0.1f, frames);
+
+        frames.clear();
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 240, 0, 16, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 240, 0, 16, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32));
+        growMario = new Animation<>(0.2f, frames);
     }
 
     public void update(float dt) {
@@ -77,16 +96,24 @@ public class Mario extends Sprite {
         currentState = getState();
         TextureRegion region;
         switch (currentState) {
+            case GROWING:
+                region = growMario.getKeyFrame(stateTimer);
+                if (growMario.isAnimationFinished(stateTimer)) {
+                    runGrowAniimation = false;
+                }
+                break;
             case JUMPING:
-                region = marioJump.getKeyFrame(stateTimer);
+                region = marioIsBig ? bigMarioJump : marioJump;
                 break;
             case RUNNING:
-                region = marioRun.getKeyFrame(stateTimer, true);
+                region = marioIsBig ?
+                        bigMarioRun.getKeyFrame(stateTimer, true) :
+                        marioRun.getKeyFrame(stateTimer, true);
                 break;
             case FALLING:
             case STANDING:
             default:
-                region = marioStand;
+                region = marioIsBig ? bigMarioStand : marioStand;
         }
         if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
             region.flip(true, false);
@@ -101,19 +128,29 @@ public class Mario extends Sprite {
         return region;
     }
 
+    public void grow() {
+        runGrowAniimation = true;
+        marioIsBig = true;
+        setBounds(getX(), getY(), getWidth(), getHeight() * 2);
+        MarioBros.assetManager.get("audio/sounds/powerup.wav", Sound.class).play();
+    }
+
     private State getState() {
-         if (b2body.getLinearVelocity().y > 0 ||
-                 (b2body.getLinearVelocity().y < 0 && prevState == State.JUMPING)
-         )
-             return State.JUMPING;
+        if (runGrowAniimation) {
+            return State.GROWING;
+        }
+        if (b2body.getLinearVelocity().y > 0 ||
+                (b2body.getLinearVelocity().y < 0 && prevState == State.JUMPING)
+        )
+            return State.JUMPING;
 
-         if (b2body.getLinearVelocity().y < 0)
-             return State.FALLING;
+        if (b2body.getLinearVelocity().y < 0)
+            return State.FALLING;
 
-         if (b2body.getLinearVelocity().x != 0)
-             return State.RUNNING;
+        if (b2body.getLinearVelocity().x != 0)
+            return State.RUNNING;
 
-         return State.STANDING;
+        return State.STANDING;
     }
 
     private void defineMario() {
@@ -137,7 +174,7 @@ public class Mario extends Sprite {
         shape.setRadius(6 / PPM);
 
         fDef.shape = shape;
-        b2body.createFixture(fDef);
+        b2body.createFixture(fDef).setUserData(this);
 
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / PPM, 6 / PPM), new Vector2(2 / PPM, 6 / PPM));
