@@ -33,8 +33,7 @@ public class B2WorldCreator {
                 .getObjects()
                 .getByType(RectangleMapObject.class)
         ) {
-            Rectangle rect = mo.getRectangle();
-            new Coin(screen, rect);
+            new Coin(screen, mo);
         }
 
         for (RectangleMapObject mo: map.getLayers()
@@ -42,8 +41,7 @@ public class B2WorldCreator {
                 .getObjects()
                 .getByType(RectangleMapObject.class)
         ) {
-            Rectangle rect = mo.getRectangle();
-            new Brick(screen, rect);
+            new Brick(screen, mo);
         }
 
         for (RectangleMapObject mo: map.getLayers()

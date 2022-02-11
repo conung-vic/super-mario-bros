@@ -80,8 +80,8 @@ public class PlayScreen implements Screen {
         this.world.setContactListener(new WorldContactListener());
 
         this.music = MarioBros.assetManager.get("audio/music/mario_music.ogg", Music.class);
-//        music.setLooping(true);
-//        music.play();
+        music.setLooping(true);
+        music.play();
 
         items = new Array<>();
         itemsToSpawn = new LinkedBlockingQueue<>();
