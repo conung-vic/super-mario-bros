@@ -6,10 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.conungvic.gi.screens.PlayScreen;
+import com.conungvic.gi.sprites.Mario;
+import com.conungvic.gi.sprites.Revercable;
 
 import static com.conungvic.gi.MarioBros.PPM;
 
-public abstract class Item extends Sprite {
+public abstract class Item extends Sprite implements Revercable {
     protected PlayScreen screen;
     protected World world;
     protected Vector2 velocity;
@@ -28,7 +30,7 @@ public abstract class Item extends Sprite {
     }
 
     public abstract void defineItem();
-    public abstract void use();
+    public abstract void use(Mario mario);
 
     public void update(float dt) {
         if (toDestroy && !destroyed) {
@@ -45,5 +47,13 @@ public abstract class Item extends Sprite {
 
     public void destroy() {
         this.toDestroy = true;
+    }
+
+    @Override
+    public void reverseVelocity(boolean x, boolean y) {
+        if (x)
+            velocity.x = -velocity.x;
+        if (y)
+            velocity.y = -velocity.y;
     }
 }

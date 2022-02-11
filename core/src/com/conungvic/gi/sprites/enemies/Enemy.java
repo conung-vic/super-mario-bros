@@ -5,8 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.conungvic.gi.screens.PlayScreen;
+import com.conungvic.gi.sprites.Revercable;
 
-public abstract class Enemy extends Sprite {
+public abstract class Enemy extends Sprite implements Revercable {
     protected final World world;
     protected final PlayScreen screen;
     public Body b2body;
@@ -24,6 +25,7 @@ public abstract class Enemy extends Sprite {
     public abstract void update(float dt);
     public abstract void hitOnHead();
 
+    @Override
     public void reverseVelocity(boolean x, boolean y) {
         if (x)
             velocity.x = -velocity.x;

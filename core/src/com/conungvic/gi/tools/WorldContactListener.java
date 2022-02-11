@@ -1,15 +1,20 @@
 package com.conungvic.gi.tools;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.conungvic.gi.sprites.Mario;
+import com.conungvic.gi.sprites.Revercable;
 import com.conungvic.gi.sprites.enemies.Enemy;
+import com.conungvic.gi.sprites.items.Item;
 import com.conungvic.gi.sprites.tiles.InteractiveTileObject;
 
 import static com.conungvic.gi.MarioBros.ENEMY_BIT;
 import static com.conungvic.gi.MarioBros.ENEMY_HEAD_BIT;
+import static com.conungvic.gi.MarioBros.ITEM_BIT;
 import static com.conungvic.gi.MarioBros.MARIO_BIT;
 import static com.conungvic.gi.MarioBros.OBJECT_BIT;
 
@@ -41,21 +46,37 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             }
-            case ENEMY_BIT | OBJECT_BIT: {
-                if (fixA.getFilterData().categoryBits == ENEMY_BIT) {
-                    ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
-                } else {
-                    ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+            case ENEMY_BIT | OBJECT_BIT:
+            case ENEMY_BIT:
+            case ITEM_BIT:
+            case ITEM_BIT | ENEMY_BIT:
+            case ITEM_BIT | OBJECT_BIT: {
+                if (
+                        fixA.getFilterData().categoryBits == ENEMY_BIT ||
+                        fixA.getFilterData().categoryBits == ITEM_BIT
+                ) {
+                    ((Revercable) fixA.getUserData()).reverseVelocity(true, false);
+                };
+
+                if (
+                        fixB.getFilterData().categoryBits == ENEMY_BIT ||
+                        fixB.getFilterData().categoryBits == ITEM_BIT
+                ) {
+                    ((Revercable)fixB.getUserData()).reverseVelocity(true, false);
                 }
                 break;
             }
-            case ENEMY_BIT: {
-                ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
-                ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+            case MARIO_BIT | ENEMY_BIT: {
+                Gdx.app.log("Mario", "Dead");
                 break;
             }
-            case MARIO_BIT | ENEMY_BIT: {
-
+            case MARIO_BIT | ITEM_BIT: {
+                if (fixA.getFilterData().categoryBits == ITEM_BIT) {
+                    ((Item) fixA.getUserData()).use((Mario) fixB.getUserData());
+                } else {
+                    ((Item) fixB.getUserData()).use((Mario) fixA.getUserData());
+                }
+                break;
             }
             default: {}
         }
