@@ -215,4 +215,8 @@ public class PlayScreen implements Screen {
         b2dr.dispose();
         hud.dispose();
     }
+
+    public Music getMusic() {
+        return music;
+    }
 }

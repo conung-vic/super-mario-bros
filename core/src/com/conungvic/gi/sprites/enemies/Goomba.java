@@ -1,5 +1,6 @@
 package com.conungvic.gi.sprites.enemies;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
+import com.conungvic.gi.MarioBros;
 import com.conungvic.gi.scenes.Hud;
 import com.conungvic.gi.screens.PlayScreen;
 
@@ -96,6 +98,7 @@ public class Goomba extends Enemy {
     public void hitOnHead() {
         setToDestroy = true;
         Hud.addScore(50);
+        MarioBros.assetManager.get("audio/sounds/stomp.wav", Sound.class).play();
     }
 
     @Override

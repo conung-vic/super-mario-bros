@@ -44,6 +44,9 @@ public class MarioBros extends Game {
 		assetManager.load("audio/sounds/breakblock.wav", Sound.class);
 		assetManager.load("audio/sounds/powerup_spawn.wav", Sound.class);
 		assetManager.load("audio/sounds/powerup.wav", Sound.class);
+		assetManager.load("audio/sounds/powerdown.wav", Sound.class);
+		assetManager.load("audio/sounds/stomp.wav", Sound.class);
+		assetManager.load("audio/sounds/mariodie.wav", Sound.class);
 
 		assetManager.finishLoading();
 
