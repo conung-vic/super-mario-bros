@@ -1,4 +1,4 @@
-package com.conungvic.gi.sprites;
+package com.conungvic.gi.sprites.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -39,6 +39,7 @@ public class Goomba extends Enemy {
         walkAnimation = new Animation<>(0.4f, frames);
         stateTime = 0;
         setBounds(getX(), getY(), 16 / PPM, 16 / PPM);
+        b2body.setActive(false);
     }
 
     @Override

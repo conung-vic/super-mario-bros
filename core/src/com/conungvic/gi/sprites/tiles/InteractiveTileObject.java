@@ -1,4 +1,4 @@
-package com.conungvic.gi.sprites;
+package com.conungvic.gi.sprites.tiles;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -22,8 +22,10 @@ public abstract class InteractiveTileObject {
     protected Rectangle bounds;
     protected Body body;
     protected Fixture fixture;
+    protected PlayScreen screen;
 
     public InteractiveTileObject(PlayScreen screen, Rectangle bounds) {
+        this.screen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();
         this.bounds = bounds;

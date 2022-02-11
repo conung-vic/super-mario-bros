@@ -1,4 +1,4 @@
-package com.conungvic.gi.sprites;
+package com.conungvic.gi.sprites.tiles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;

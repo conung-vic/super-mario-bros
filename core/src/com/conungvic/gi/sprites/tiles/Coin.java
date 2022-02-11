@@ -1,14 +1,18 @@
-package com.conungvic.gi.sprites;
+package com.conungvic.gi.sprites.tiles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.conungvic.gi.MarioBros;
 import com.conungvic.gi.scenes.Hud;
 import com.conungvic.gi.screens.PlayScreen;
+import com.conungvic.gi.sprites.items.ItemDef;
+import com.conungvic.gi.sprites.items.Mushroom;
 
 import static com.conungvic.gi.MarioBros.COIN_BIT;
+import static com.conungvic.gi.MarioBros.PPM;
 
 public class Coin extends InteractiveTileObject{
     private static TiledMapTileSet tileSet;
@@ -27,6 +31,7 @@ public class Coin extends InteractiveTileObject{
             MarioBros.assetManager.get("audio/sounds/bump.wav", Sound.class).play();
         } else {
             MarioBros.assetManager.get("audio/sounds/coin.wav", Sound.class).play();
+            screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 16 / PPM), Mushroom.class));
             Hud.addScore(100);
         }
 

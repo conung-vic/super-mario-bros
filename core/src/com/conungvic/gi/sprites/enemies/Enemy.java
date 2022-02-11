@@ -1,4 +1,4 @@
-package com.conungvic.gi.sprites;
+package com.conungvic.gi.sprites.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;

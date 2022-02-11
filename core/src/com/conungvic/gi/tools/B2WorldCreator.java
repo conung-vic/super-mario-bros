@@ -10,9 +10,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.conungvic.gi.screens.PlayScreen;
-import com.conungvic.gi.sprites.Brick;
-import com.conungvic.gi.sprites.Coin;
-import com.conungvic.gi.sprites.Goomba;
+import com.conungvic.gi.sprites.tiles.Brick;
+import com.conungvic.gi.sprites.tiles.Coin;
+import com.conungvic.gi.sprites.enemies.Goomba;
 
 import static com.conungvic.gi.MarioBros.GROUND_BIT;
 import static com.conungvic.gi.MarioBros.OBJECT_BIT;
