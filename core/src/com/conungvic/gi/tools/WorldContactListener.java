@@ -12,10 +12,13 @@ import com.conungvic.gi.sprites.enemies.Enemy;
 import com.conungvic.gi.sprites.items.Item;
 import com.conungvic.gi.sprites.tiles.InteractiveTileObject;
 
+import static com.conungvic.gi.MarioBros.BRICK_BIT;
+import static com.conungvic.gi.MarioBros.COIN_BIT;
 import static com.conungvic.gi.MarioBros.ENEMY_BIT;
 import static com.conungvic.gi.MarioBros.ENEMY_HEAD_BIT;
 import static com.conungvic.gi.MarioBros.ITEM_BIT;
 import static com.conungvic.gi.MarioBros.MARIO_BIT;
+import static com.conungvic.gi.MarioBros.MARIO_HEAD_BIT;
 import static com.conungvic.gi.MarioBros.OBJECT_BIT;
 
 public class WorldContactListener implements ContactListener {
@@ -26,18 +29,15 @@ public class WorldContactListener implements ContactListener {
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
-        if ("head".equals(fixA.getUserData()) ||
-                "head".equals(fixB.getUserData())
-        ) {
-            Fixture head = "head".equals(fixA.getUserData()) ? fixA : fixB;
-            Fixture object = "head".equals(fixA.getUserData()) ? fixB : fixA;
-
-            if (object.getUserData() instanceof InteractiveTileObject) {
-                ((InteractiveTileObject)object.getUserData()).onHeadHit();
-            }
-        }
-
         switch (cDef) {
+            case MARIO_HEAD_BIT | BRICK_BIT:
+            case MARIO_HEAD_BIT | COIN_BIT:
+                if (fixA.getFilterData().categoryBits == MARIO_HEAD_BIT) {
+                    ((InteractiveTileObject)fixB.getUserData()).onHeadHit((Mario) fixA.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixA.getUserData()).onHeadHit((Mario) fixB.getUserData());
+                }
+                break;
             case ENEMY_HEAD_BIT | MARIO_BIT: {
                 if (fixA.getFilterData().categoryBits == ENEMY_HEAD_BIT) {
                     ((Enemy)fixA.getUserData()).hitOnHead();

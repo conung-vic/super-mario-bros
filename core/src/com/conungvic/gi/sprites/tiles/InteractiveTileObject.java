@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.conungvic.gi.screens.PlayScreen;
+import com.conungvic.gi.sprites.Mario;
 
 import static com.conungvic.gi.MarioBros.PPM;
 
@@ -49,7 +50,7 @@ public abstract class InteractiveTileObject {
         fixture.setUserData(this);
     }
 
-    public abstract void onHeadHit();
+    public abstract void onHeadHit(Mario mario);
 
     public void setCategoryFilter(short filterBit) {
         Filter filter = new Filter();
