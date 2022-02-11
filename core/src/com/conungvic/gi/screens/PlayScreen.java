@@ -116,14 +116,14 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         handleSpawningItems();
 
-        world.step(1/60f, 6, 2);
+        world.step(1 / 60f, 6, 2);
 
         player.update(dt);
 
 
-        for (Goomba goomba: B2WorldCreator.goombas) {
+        for (Goomba goomba : B2WorldCreator.goombas) {
             goomba.update(dt);
-            if (goomba.getX() < player.getX() + 224/PPM) {
+            if (goomba.getX() < player.getX() + 224 / PPM) {
                 goomba.b2body.setActive(true);
             }
         }
@@ -133,13 +133,19 @@ public class PlayScreen implements Screen {
         }
 
         hud.update(dt);
+        if (player.currentState != Mario.State.DEAD) {
+            gamecam.position.x = player.b2body.getPosition().x;
+        }
 
-        gamecam.position.x = player.b2body.getPosition().x;
         gamecam.update();
         renderer.setView(gamecam);
     }
 
     private void handleInput(float dt) {
+        if (player.currentState == Mario.State.DEAD) {
+            return;
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             player.b2body.applyLinearImpulse(
                     new Vector2(0, 4f),
@@ -174,7 +180,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        for (Goomba goomba: B2WorldCreator.goombas) {
+        for (Goomba goomba : B2WorldCreator.goombas) {
             goomba.draw(game.batch);
         }
 
