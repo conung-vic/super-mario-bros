@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.height = V_HEIGHT;
 		config.width = V_WIDTH;
-		config.title = "Galaxy Invanders";
+		config.title = "Mario Bros Clon";
 
 		new LwjglApplication(new MarioBros(), config);
 	}
