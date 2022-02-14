@@ -1,5 +1,6 @@
 package com.conungvic.gi.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -28,6 +29,8 @@ public class Hud implements Disposable {
     Label levelLabel;
     Label worldLabel;
     Label marioLabel;
+    Label fpsLabel;
+    Label fpsCountLabel;
 
     public Hud(SpriteBatch batch) {
         this.worldTimer = 300;
@@ -47,6 +50,8 @@ public class Hud implements Disposable {
         levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         marioLabel = new Label("MARIO", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        fpsLabel = new Label("FPS:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        fpsCountLabel = new Label(String.format("%04d", Gdx.graphics.getFramesPerSecond()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         table.add(marioLabel).expandX().padTop(10);
         table.add(worldLabel).expandX().padTop(10);
@@ -55,6 +60,9 @@ public class Hud implements Disposable {
         table.add(scoreLabel).expandX();
         table.add(levelLabel).expandX();
         table.add(countdownLabel).expandX();
+        table.row();
+        table.add(fpsLabel).expandX();
+        table.add(fpsCountLabel).expandX();
 
         stage.addActor(table);
     }
@@ -66,6 +74,7 @@ public class Hud implements Disposable {
             countdownLabel.setText(String.format("%03d", this.worldTimer));
             timeCount = 0;
         }
+        fpsCountLabel.setText(String.format("%04d", Gdx.graphics.getFramesPerSecond()));
     }
 
     public static void addScore(int value) {

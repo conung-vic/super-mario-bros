@@ -14,6 +14,11 @@ public class DesktopLauncher {
 		config.height = V_HEIGHT;
 		config.width = V_WIDTH;
 		config.title = "Mario Bros Clon";
+		config.vSyncEnabled = false;
+		config.foregroundFPS = 0;
+		config.backgroundFPS = 0;
+		config.resizable = false;
+//		config.fullscreen = true;
 
 		new LwjglApplication(new MarioBros(), config);
 	}

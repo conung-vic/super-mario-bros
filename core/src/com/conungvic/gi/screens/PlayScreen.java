@@ -116,7 +116,9 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         handleSpawningItems();
 
-        world.step(1 / 60f, 6, 2);
+        float fps = 1.0f * Gdx.graphics.getFramesPerSecond();
+        float timeStep = fps > 60 ? 1/fps : 1/60f;
+        world.step(timeStep, 6, 2);
 
         player.update(dt);
 
